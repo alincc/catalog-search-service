@@ -1,0 +1,1 @@
+package no.nb.cloud.catalogsearch.service;

@@ -1,0 +1,6 @@
+{
+  "generator-spring-microservice": {
+    "packageName": "no.nb.cloud.catalogsearch",
+    "packageFolder": "no/nb/cloud/catalogsearch"
+  }
+}
