@@ -1,4 +1,4 @@
-package no.nb.cloud.catalogsearch.security;
+package no.nb.microservices.catalogsearch.security;
 
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;

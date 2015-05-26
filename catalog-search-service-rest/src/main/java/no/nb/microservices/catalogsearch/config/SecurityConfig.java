@@ -1,4 +1,4 @@
-package no.nb.cloud.catalogsearch.config;
+package no.nb.microservices.catalogsearch.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

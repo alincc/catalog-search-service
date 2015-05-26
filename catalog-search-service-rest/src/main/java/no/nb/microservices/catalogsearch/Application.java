@@ -1,4 +1,4 @@
-package no.nb.cloud.catalogsearch;
+package no.nb.microservices.catalogsearch;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

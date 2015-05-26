@@ -1,4 +1,4 @@
-package no.nb.cloud.catalogsearch.rest;
+package no.nb.microservices.catalogsearch.rest;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;

@@ -1,6 +1,8 @@
 package no.nb.cloud.catalogsearch.rest;
 
-import no.nb.cloud.catalogsearch.Application;
+import no.nb.microservices.catalogsearch.Application;
+import no.nb.microservices.catalogsearch.rest.HomeResource;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

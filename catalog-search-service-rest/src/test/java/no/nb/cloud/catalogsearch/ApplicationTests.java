@@ -1,5 +1,7 @@
 package no.nb.cloud.catalogsearch;
 
+import no.nb.microservices.catalogsearch.Application;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.web.WebAppConfiguration;
