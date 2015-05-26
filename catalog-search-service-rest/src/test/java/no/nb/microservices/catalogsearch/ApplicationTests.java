@@ -1,4 +1,4 @@
-package no.nb.cloud.catalogsearch;
+package no.nb.microservices.catalogsearch;
 
 import no.nb.microservices.catalogsearch.Application;
 
