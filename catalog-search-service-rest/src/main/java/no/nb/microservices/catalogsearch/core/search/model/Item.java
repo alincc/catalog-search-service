@@ -2,15 +2,17 @@ package no.nb.microservices.catalogsearch.core.search.model;
 
 import org.springframework.hateoas.Identifiable;
 
-public class SearchResult implements Identifiable<String> {
+public class Item implements Identifiable<String> {
 
     private String id;
+
+    public Item(String id) {
+        super();
+        this.id = id;
+    }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }

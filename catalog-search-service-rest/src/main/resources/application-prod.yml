@@ -6,4 +6,4 @@ spring:
         keyUri: http://localhost:9999/uaa/oauth/token_key
 
 server:
-  port: 0
+  port: 8080
