@@ -49,7 +49,7 @@ public class SearchServiceImpl implements ISearchService {
     public SearchAggregated search(String query, Pageable pageable) {
         
         List<String> result = indexRepository.search(query, pageable);
-        List<Item> metadata = new ArrayList<>();
+        List<Item> metadata = Collections.synchronizedList(new ArrayList<>());
         final CountDownLatch latch = new CountDownLatch(result.size());
         
         
