@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>catalog-search-service-model</artifactId>
-
+    
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
