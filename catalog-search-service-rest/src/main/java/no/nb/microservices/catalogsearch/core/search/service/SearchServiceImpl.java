@@ -34,7 +34,7 @@ public class SearchServiceImpl implements ISearchService {
     
     @PostConstruct
     private void init() {
-        reactor.on($("services"), receiver);
+        reactor.on($("metadata"), receiver);
     }
 
     
@@ -52,10 +52,10 @@ public class SearchServiceImpl implements ISearchService {
         List<Item> metadata = new ArrayList<>();
         final CountDownLatch latch = new CountDownLatch(result.size());
         
-        MetadataWrapper metadataWrapper = new MetadataWrapper(latch, metadata);
         
         for (String id : result) {
-            reactor.notify("services", Event.wrap(metadataWrapper));
+            MetadataWrapper metadataWrapper = new MetadataWrapper(id, latch, metadata);
+            reactor.notify("metadata", Event.wrap(metadataWrapper));
         }
         
         try {
