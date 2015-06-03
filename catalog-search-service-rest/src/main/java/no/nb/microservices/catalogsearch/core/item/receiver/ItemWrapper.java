@@ -1,29 +1,29 @@
-package no.nb.microservices.catalogsearch.core.metadata.receiver;
+package no.nb.microservices.catalogsearch.core.item.receiver;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import no.nb.microservices.catalogsearch.core.search.model.Item;
 
-public class MetadataWrapper {
+public class ItemWrapper {
 
     private String id;
     private CountDownLatch latch;
-    private List<Item> metadata;
+    private List<Item> items;
     
-    public MetadataWrapper(String id, CountDownLatch latch, List<Item> metadata) {
+    public ItemWrapper(String id, CountDownLatch latch, List<Item> items) {
         super();
         this.id = id;
         this.latch = latch;
-        this.metadata = metadata;
+        this.items = items;
     }
 
     public CountDownLatch getLatch() {
         return latch;
     }
 
-    public List<Item> getMetadata() {
-        return metadata;
+    public List<Item> getItems() {
+        return items;
     }
 
     public String getId() {

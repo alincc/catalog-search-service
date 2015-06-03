@@ -2,20 +2,13 @@ package no.nb.microservices.catalogsearch.core.search.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
-import static reactor.event.selector.Selectors.$;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
-import no.nb.microservices.catalogsearch.core.index.repository.IIndexRepository;
 import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
-import no.nb.microservices.catalogsearch.core.metadata.receiver.MetadataWrapper;
-import no.nb.microservices.catalogsearch.core.search.model.Item;
+import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 
 import org.junit.Before;
@@ -29,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import reactor.core.Environment;
 import reactor.core.Reactor;
 import reactor.core.spec.Reactors;
+import reactor.event.Event;
+import reactor.function.Consumer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchServiceImplTest {
@@ -41,9 +36,9 @@ public class SearchServiceImplTest {
     @Before
     public void setUp() {
         Reactor reactor = Reactors.reactor().env(new Environment()).dispatcher(Environment.THREAD_POOL).get();
-        searchService = new SearchServiceImpl(reactor, indexService);
-        
-        reactor.on($("metadata"), new MetadataReceiverMock());
+        Consumer<Event<ItemWrapper>> consumer = new ItemReceiverMock();
+        searchService = new SearchServiceImpl(reactor, indexService, consumer);
+        searchService.init();
     }
     
     @Test

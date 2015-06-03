@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.nb.microservices.catalogsearch</groupId>
     <artifactId>catalog-search-service</artifactId>
@@ -8,7 +9,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.2.3.RELEASE</version>
-        <relativePath/>
+        <relativePath />
         <!-- lookup parent from repository -->
     </parent>
 
@@ -27,6 +28,16 @@
         <developerConnection>scm:git:git@github.com:NationalLibraryOfNorway/catalog-search-service.git</developerConnection>
     </scm>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>no.nb.microservices.catalogitem</groupId>
+                <artifactId>catalog-item-service-model</artifactId>
+                <version>0.0.1-90e8efa588ac44ae1895338e4a30eac174f234ff-3</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <distributionManagement>
         <snapshotRepository>
             <id>snapshots</id>
@@ -39,5 +50,17 @@
             <url>http://utvikling.nb.no:8091/artifactory/libs-releases-local</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <releases />
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>releases</id>
+            <name>Release versjoner av NB software</name>
+            <url>http://utvikling.nb.no:8091/artifactory/libs-releases-local</url>
+        </repository>
+    </repositories>
 
 </project>
