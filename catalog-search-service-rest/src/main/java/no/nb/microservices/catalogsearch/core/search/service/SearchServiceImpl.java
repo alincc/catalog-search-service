@@ -7,8 +7,10 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.PostConstruct;
 
+import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.repository.IIndexRepository;
-import no.nb.microservices.catalogsearch.core.metadata.receiver.MetadataReceiver;
+import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
+import no.nb.microservices.catalogsearch.core.metadata.receiver.MetadataConsumer;
 import no.nb.microservices.catalogsearch.core.metadata.receiver.MetadataWrapper;
 import no.nb.microservices.catalogsearch.core.search.model.Item;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
@@ -26,34 +28,34 @@ import static reactor.event.selector.Selectors.$;
 @Service
 public class SearchServiceImpl implements ISearchService {
 
-    private final IIndexRepository indexRepository;
+    private final IIndexService indexService;
     private final Reactor reactor;
     
     @Autowired
-    private MetadataReceiver receiver;
+    private MetadataConsumer metadataConsumer;
     
     @PostConstruct
     private void init() {
-        reactor.on($("metadata"), receiver);
+        reactor.on($("metadata"), metadataConsumer);
     }
 
     
     @Autowired
-    public SearchServiceImpl(Reactor reactor, IIndexRepository indexRepository) {
+    public SearchServiceImpl(Reactor reactor, IIndexService indexService) {
         super();
         this.reactor = reactor;
-        this.indexRepository = indexRepository;
+        this.indexService = indexService;
     }
 
     @Override
     public SearchAggregated search(String query, Pageable pageable) {
         
-        List<String> result = indexRepository.search(query, pageable);
+        SearchResult result = indexService.search(query, pageable);
         List<Item> metadata = Collections.synchronizedList(new ArrayList<>());
-        final CountDownLatch latch = new CountDownLatch(result.size());
+        final CountDownLatch latch = new CountDownLatch(result.getIds().size());
         
         
-        for (String id : result) {
+        for (String id : result.getIds()) {
             MetadataWrapper metadataWrapper = new MetadataWrapper(id, latch, metadata);
             reactor.notify("metadata", Event.wrap(metadataWrapper));
         }
