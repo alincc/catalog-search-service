@@ -29,7 +29,7 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class, RibbonClientConfiguration.class})
 @WebIntegrationTest("server.port: 0")
-public class ApplicationTests {
+public class SearchControllerIT {
 
     @Value("${local.server.port}")
     int port;
