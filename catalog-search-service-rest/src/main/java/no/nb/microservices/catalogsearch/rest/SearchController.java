@@ -1,15 +1,10 @@
 package no.nb.microservices.catalogsearch.rest;
 
-import java.util.List;
-
-import no.nb.microservices.catalogsearch.core.search.model.Item;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.core.search.service.ISearchService;
 import no.nb.microservices.catalogsearch.rest.model.search.SearchResource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
