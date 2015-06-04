@@ -143,6 +143,18 @@ public class SearchResultResourceAssemblerTest {
         
     }
     
+    @Test
+    public void whenSearchResultHasNoItemsThenReturnValueShouldHaveNoItems() {
+        SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
+
+        Page<Item> page = new PageImpl<Item>(new ArrayList<>(), new PageRequest(0, 10) , 1000);
+        SearchAggregated searchAggregated = new SearchAggregated(page);
+        
+        SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
+        assertEquals("Items should have 0 items", 0, searchResultResource.getEmbedded().getItems().size());
+        
+    }
+    
     private Item createItem(String id) {
         Item item = new Item(id);
         return item;
