@@ -92,6 +92,23 @@ public class SearchResultResourceAssemblerTest {
     }
 
     @Test
+    public void whenOnFirstPageAndSizeIsSmallerThanSizeThenReturnValueShouldHaveANextLinkElement() {
+        SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
+
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(createItem("id1"));
+        items.add(createItem("id2"));
+        items.add(createItem("id3"));
+
+        Page<Item> page = new PageImpl<Item>(items, new PageRequest(0, 2) , 1000);
+        SearchAggregated searchAggregated = new SearchAggregated(page);
+        
+        SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
+        assertNotNull(searchResultResource.getLink(Link.REL_NEXT));
+        
+    }
+
+    @Test
     public void whenNotOnFirstPageThenReturnValueShouldHaveAFirstLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
