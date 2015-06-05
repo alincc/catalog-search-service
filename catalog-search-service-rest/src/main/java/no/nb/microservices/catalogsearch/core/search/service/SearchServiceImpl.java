@@ -13,6 +13,7 @@ import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
+import no.nb.microservices.catalogsearch.core.search.exception.LatchException;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,11 +73,12 @@ public class SearchServiceImpl implements ISearchService {
 
 
     private void waitForAllItemsToFinish(final CountDownLatch latch) {
-        try {
-            latch.await();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                throw new LatchException(e);
+            }
     }
 
 }
