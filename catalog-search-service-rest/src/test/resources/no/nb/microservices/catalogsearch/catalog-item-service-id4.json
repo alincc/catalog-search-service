@@ -1,0 +1,13 @@
+{  
+   "_links": {
+        "self": {
+           "href": "http://localhost/item/id4"
+        }
+    },
+   "metadata":{  
+      "title":  
+         {  
+            "title":"Title ID4"
+         }
+   }
+}
