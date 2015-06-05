@@ -42,7 +42,7 @@
         <dependency>
             <groupId>no.nb.microservices.catalogsearchindex</groupId>
             <artifactId>catalog-search-index-model</artifactId>
-            <version>-6c4deb44b52b16038e294dff1c1c8c352bd109ab-14</version>
+            <version>-62b0aeefa7ff73e4adc542b18f79e8a5f66dcacb-15</version>
         </dependency>
         <dependency>
             <groupId>no.nb.microservices.catalogitem</groupId>
@@ -131,6 +131,11 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.10.4</version>
+        </dependency>
     </dependencies>
 
     <build>
