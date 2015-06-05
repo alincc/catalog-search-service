@@ -2,13 +2,7 @@ package no.nb.microservices.catalogsearch.core.index.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.repository.IIndexRepository;
 import no.nb.microservices.catalogsearchindex.EmbeddedWrapper;
@@ -23,8 +17,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources.PageMetadata;
-
-import scala.annotation.meta.setter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IndexServiceImplTest {
