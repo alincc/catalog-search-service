@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SearchResource extends ResourceSupport {
+    @JsonProperty("page")
     private PageMetadata metadata;
+    @JsonProperty("_embedded")
     private EmbeddedWrapper wrapper = new EmbeddedWrapper(); 
 
     @JsonCreator
@@ -19,12 +21,10 @@ public class SearchResource extends ResourceSupport {
         this.metadata = metadata;
     }
 
-    @JsonProperty("page")
     public PageMetadata getMetadata() {
         return metadata;
     }
 
-    @JsonProperty("_embedded")
     public EmbeddedWrapper getEmbedded() {
         return wrapper;
     }

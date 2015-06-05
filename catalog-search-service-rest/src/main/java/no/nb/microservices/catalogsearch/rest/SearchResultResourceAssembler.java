@@ -1,6 +1,6 @@
 package no.nb.microservices.catalogsearch.rest;
 
-import no.nb.microservices.catalogsearch.core.search.model.Item;
+import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.rest.model.search.SearchResource;
 
@@ -17,17 +17,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public class SearchResultResourceAssembler implements ResourceAssembler<SearchAggregated, SearchResource> {
 
-    private ItemResourceAssembler assembler = new ItemResourceAssembler();
     private final HateoasPageableHandlerMethodArgumentResolver pageableResolver = new HateoasPageableHandlerMethodArgumentResolver();
     
     @Override
     public SearchResource toResource(SearchAggregated result) {
         
-        
         SearchResource resources = new SearchResource(asPageMetadata(result.getPage()));
 
-        for (Item item : result.getPage().getContent()) {
-            resources.getEmbedded().getItems().add(assembler.toResource(item));
+        for (ItemResource item : result.getPage().getContent()) {
+            resources.getEmbedded().getItems().add(item);
         }
         
         return addPaginationLinks(resources, result.getPage());

@@ -1,5 +1,6 @@
 package no.nb.microservices.catalogsearch;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -7,6 +8,7 @@ import java.util.Arrays;
 
 import no.nb.microservices.catalogsearch.rest.model.search.SearchResource;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,10 @@ import org.springframework.web.client.RestTemplate;
 import com.netflix.loadbalancer.BaseLoadBalancer;
 import com.netflix.loadbalancer.ILoadBalancer;
 import com.netflix.loadbalancer.Server;
+import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class, RibbonClientConfiguration.class})
@@ -42,19 +46,44 @@ public class SearchControllerIT {
 	@Test
 	public void testSearch() throws Exception {
 
+	    String searchResultMock = IOUtils.toString(this.getClass().getResourceAsStream("catalog-search-index-service.json"));
+	    String itemId1Mock = IOUtils.toString(this.getClass().getResourceAsStream("catalog-item-service-id1.json"));
+	    String itemId2Mock = IOUtils.toString(this.getClass().getResourceAsStream("catalog-item-service-id2.json"));
+	    String itemId3Mock = IOUtils.toString(this.getClass().getResourceAsStream("catalog-item-service-id3.json"));
+	    String itemId4Mock = IOUtils.toString(this.getClass().getResourceAsStream("catalog-item-service-id4.json"));
+
 	    MockWebServer server = new MockWebServer();
-	    server.enqueue(new MockResponse().setBody("hello, world!"));
+	    final Dispatcher dispatcher = new Dispatcher() {
+
+	        @Override
+	        public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+	            if (request.getPath().equals("/search?q=Ola")){
+	                return new MockResponse().setBody(searchResultMock).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
+	            } else if (request.getPath().equals("/item/id1")){
+	                return new MockResponse().setBody(itemId1Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
+                } else if (request.getPath().equals("/item/id2")){
+                    return new MockResponse().setBody(itemId2Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
+                } else if (request.getPath().equals("/item/id3")){
+                    return new MockResponse().setBody(itemId3Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
+                } else if (request.getPath().equals("/item/id4")){
+                    return new MockResponse().setBody(itemId4Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
+                }
+	            return new MockResponse().setResponseCode(404);
+	        }
+	    };
+	    server.setDispatcher(dispatcher);
 	    server.start();
 	    
 	    BaseLoadBalancer blb = (BaseLoadBalancer) lb;
 	    blb.setServersList(Arrays.asList(new Server(server.getHostName(), server.getPort())));
 	    
 	    ResponseEntity<SearchResource> result = template.getForEntity("http://localhost:" + port + "/search?q=Ola&size=2", SearchResource.class);
-	    
+
 	    assertTrue(result.getStatusCode().is2xxSuccessful());
 	    assertNotNull(result.getBody().getMetadata());
 	    assertNotNull(result.getBody().getEmbedded());
 	    assertNotNull(result.getBody().getLinks());
+	    assertEquals(4, result.getBody().getEmbedded().getItems().size());
 
 	}
 

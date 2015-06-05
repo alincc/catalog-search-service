@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
-import no.nb.microservices.catalogsearch.core.search.model.Item;
+import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.core.search.service.ISearchService;
 import no.nb.microservices.catalogsearch.rest.model.search.SearchResource;
@@ -25,8 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.google.common.net.MediaType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchControllerTest {
@@ -62,9 +60,9 @@ public class SearchControllerTest {
         final String query = "Supersonic";
         
         PageRequest pageable = new PageRequest(0, 10);
-        List<Item> items = Arrays.asList(new Item("id1"), new Item("id2"));
+        List<ItemResource> items = Arrays.asList(new ItemResource("id1"), new ItemResource("id2"));
         
-        SearchAggregated searchResult = new SearchAggregated(new PageImpl<Item>(items, pageable, 100));
+        SearchAggregated searchResult = new SearchAggregated(new PageImpl<ItemResource>(items, pageable, 100));
         when(searchService.search(query, pageable)).thenReturn(searchResult);
         
         ResponseEntity<SearchResource> result = searchController.search(query, pageable);

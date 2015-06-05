@@ -9,10 +9,10 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.PostConstruct;
 
+import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
-import no.nb.microservices.catalogsearch.core.search.model.Item;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,6 @@ public class SearchServiceImpl implements ISearchService {
     
     private Consumer<Event<ItemWrapper>> itemConsumer;
     
-    @PostConstruct
-    void init() {
-        reactor.on($("item"), itemConsumer);
-    }
-
-    
     @Autowired
     public SearchServiceImpl(Reactor reactor, IIndexService indexService, Consumer<Event<ItemWrapper>> itemConsumer) {
         super();
@@ -47,29 +41,32 @@ public class SearchServiceImpl implements ISearchService {
         this.itemConsumer = itemConsumer;
     }
 
+    @PostConstruct
+    void init() {
+        reactor.on($("item"), itemConsumer);
+    }
+
     @Override
     public SearchAggregated search(String query, Pageable pageable) {
         
         SearchResult result = indexService.search(query, pageable);
 
-        final CountDownLatch latch = new CountDownLatch(result.getIds().size());
-
-        List<Item> items = consumeItemsAsync(result, latch);
+        List<ItemResource> items = consumeItems(result);
         
-        waitForAllItemsToFinish(latch);
-        
-        Page<Item> page = new PageImpl<Item>(items, pageable, result.getTotalElements());
-        
+        Page<ItemResource> page = new PageImpl<ItemResource>(items, pageable, result.getTotalElements());
         return new SearchAggregated(page);
     }
 
 
-    private List<Item> consumeItemsAsync(SearchResult result, 
-            final CountDownLatch latch) {
-        List<Item> items = Collections.synchronizedList(new ArrayList<>());
+    private List<ItemResource> consumeItems(SearchResult result) {
+        final CountDownLatch latch = new CountDownLatch(result.getIds().size());
+
+        List<ItemResource> items = Collections.synchronizedList(new ArrayList<>());
         for (String id : result.getIds()) {
             reactor.notify("item", Event.wrap(new ItemWrapper(id, latch, items)));
         }
+        waitForAllItemsToFinish(latch);
+        
         return items;
     }
 

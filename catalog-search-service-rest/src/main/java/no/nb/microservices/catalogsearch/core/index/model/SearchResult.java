@@ -9,17 +9,17 @@ import java.util.List;
  */
 public class SearchResult {
 
-    private int totalElements;
+    private long totalElements;
     private List<String> ids;
 
     
-    public SearchResult(List<String> ids, int totalElements) {
+    public SearchResult(List<String> ids, long totalElements) {
         super();
         this.ids = ids;
         this.totalElements = totalElements;
     }
 
-    public int getTotalElements() {
+    public long getTotalElements() {
         return totalElements;
     }
 

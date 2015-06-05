@@ -5,9 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import no.nb.microservices.catalogsearch.core.search.model.Item;
+import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.rest.model.search.SearchResource;
 
@@ -43,7 +42,7 @@ public class SearchResultResourceAssemblerTest {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
         
-        Page<Item> page = new PageImpl<Item>(new ArrayList<Item>(), new PageRequest(2, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(2, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -59,7 +58,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenOnAnyPageReturnValueShouldHaveASelfLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<Item> page = new PageImpl<Item>(new ArrayList<Item>(), new PageRequest(0, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(0, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -71,7 +70,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenOnFirstPageThenReturnValueShouldNotHaveAPreviousLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<Item> page = new PageImpl<Item>(new ArrayList<Item>(), new PageRequest(0, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(0, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -83,7 +82,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenOnLastPageThenReturnValueShouldNotHaveANextLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<Item> page = new PageImpl<Item>(new ArrayList<Item>(), new PageRequest(100, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(100, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -95,12 +94,12 @@ public class SearchResultResourceAssemblerTest {
     public void whenOnFirstPageAndSizeIsSmallerThanSizeThenReturnValueShouldHaveANextLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<ItemResource> items = new ArrayList<>();
         items.add(createItem("id1"));
         items.add(createItem("id2"));
         items.add(createItem("id3"));
 
-        Page<Item> page = new PageImpl<Item>(items, new PageRequest(0, 2) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(items, new PageRequest(0, 2) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -112,7 +111,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenNotOnFirstPageThenReturnValueShouldHaveAFirstLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<Item> page = new PageImpl<Item>(new ArrayList<Item>(), new PageRequest(2, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(2, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -124,7 +123,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenNotOnLastPageThenReturnValueShouldHaveALastLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<Item> page = new PageImpl<Item>(new ArrayList<Item>(), new PageRequest(10, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(10, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -136,7 +135,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenItNotOnLastPageThenReturnValueShouldHaveALastLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<Item> page = new PageImpl<Item>(new ArrayList<Item>(), new PageRequest(10, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(10, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -148,11 +147,11 @@ public class SearchResultResourceAssemblerTest {
     public void whenSearchResultHasItemsThenReturnValueShouldHaveItemsElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<ItemResource> items = new ArrayList<>();
         items.add(createItem("id1"));
         items.add(createItem("id2"));
         
-        Page<Item> page = new PageImpl<Item>(items, new PageRequest(0, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(items, new PageRequest(0, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -164,7 +163,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenSearchResultHasNoItemsThenReturnValueShouldHaveNoItems() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<Item> page = new PageImpl<Item>(new ArrayList<>(), new PageRequest(0, 10) , 1000);
+        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<>(), new PageRequest(0, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -172,8 +171,8 @@ public class SearchResultResourceAssemblerTest {
         
     }
     
-    private Item createItem(String id) {
-        Item item = new Item(id);
+    private ItemResource createItem(String id) {
+        ItemResource item = new ItemResource(id);
         return item;
     }
 }

@@ -38,7 +38,7 @@ public class SearchController {
             @RequestParam(value="q", required=false) String query,
             @PageableDefault Pageable pageable) {
         SearchAggregated result = searchService.search(query, pageable);
-        
+
         SearchResource resource = new SearchResultResourceAssembler().toResource(result);
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
