@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "catalog-search-index-service")
+@FeignClient("catalog-search-index-service")
 public interface IIndexRepository {
 
     @RequestMapping(method = RequestMethod.GET, value = "/search")
