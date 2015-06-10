@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -21,8 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.client.RestTemplate;
 
 import com.netflix.loadbalancer.BaseLoadBalancer;
@@ -51,11 +48,6 @@ public class SearchControllerIT {
     @Autowired
     ILoadBalancer lb;
     
-    @InitBinder("sort")
-    public void fqBinderInit(WebDataBinder binder) {
-      binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor("&"));
-    }  
-    
 	@Test
 	public void testSearch() throws Exception {
 
@@ -70,7 +62,7 @@ public class SearchControllerIT {
 
 	        @Override
 	        public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-	            System.out.println(request.getPath());
+
 	            if (request.getPath().equals("/search?q=Ola&fields=-title&page=0&size=10&sort=title%2Cdesc")){
 	                return new MockResponse().setBody(searchResultMock).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
 	            } else if (request.getPath().equals("/item/id1")){
