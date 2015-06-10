@@ -49,8 +49,8 @@ public class SearchServiceImpl implements ISearchService {
     }
 
     @Override
-    public SearchAggregated search(SearchRequest searchRequest, Pageable pageable) {
-        
+    public SearchAggregated search(SearchRequest searchRequest, Pageable pageable) throws IllegalArgumentException {
+        // TODO: Validate query
         SearchResult result = indexService.search(searchRequest, pageable);
 
         List<ItemResource> items = consumeItems(result);

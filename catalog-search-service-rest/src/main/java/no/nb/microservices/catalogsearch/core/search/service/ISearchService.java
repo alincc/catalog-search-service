@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ISearchService {
     
-    SearchAggregated search(SearchRequest searchRequest, Pageable pageable);
+    SearchAggregated search(SearchRequest searchRequest, Pageable pageable) throws IllegalArgumentException;
     
 }

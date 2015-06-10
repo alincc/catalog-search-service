@@ -3,6 +3,7 @@ package no.nb.microservices.catalogsearch.core.index.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.repository.IIndexRepository;
 import no.nb.microservices.catalogsearch.rest.SearchRequest;
@@ -30,6 +31,7 @@ public class IndexServiceImpl implements IIndexService {
     }
 
     @Override
+    @HystrixCommand(fallbackMethod = "defaultSearch")
     public SearchResult search(SearchRequest searchRequest, Pageable pageable) {
         SearchResource result = indexRepository.search(searchRequest.getQ(), searchRequest.getFields(), pageable.getPageNumber(), pageable.getPageSize(), searchRequest.getSort());
 
@@ -40,4 +42,7 @@ public class IndexServiceImpl implements IIndexService {
         return new SearchResult(ids, result.getMetadata().getTotalElements());
     }
 
+    public SearchResult defaultSearch(SearchRequest searchRequest, Pageable pageable) {
+        return new SearchResult(new ArrayList<String>(), 0);
+    }
 }
