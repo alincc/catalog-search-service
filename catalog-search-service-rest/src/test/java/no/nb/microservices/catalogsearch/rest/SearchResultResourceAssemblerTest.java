@@ -21,6 +21,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/**
+ * 
+ * @author ronnymikalsen
+ *
+ */
 public class SearchResultResourceAssemblerTest {
 
     @Before

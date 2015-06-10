@@ -26,6 +26,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/**
+ * 
+ * @author ronnymikalsen
+ *
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class SearchControllerTest {
 
@@ -57,15 +62,16 @@ public class SearchControllerTest {
     @Test
     public void whenSearchThenReturnItems() {
 
-        final String query = "Supersonic";
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setQ("Supersonic");
         
         PageRequest pageable = new PageRequest(0, 10);
         List<ItemResource> items = Arrays.asList(new ItemResource("id1"), new ItemResource("id2"));
         
         SearchAggregated searchResult = new SearchAggregated(new PageImpl<ItemResource>(items, pageable, 100));
-        when(searchService.search(query, pageable)).thenReturn(searchResult);
+        when(searchService.search(searchRequest, pageable)).thenReturn(searchResult);
         
-        ResponseEntity<SearchResource> result = searchController.search(query, pageable);
+        ResponseEntity<SearchResource> result = searchController.search(searchRequest, pageable);
         
         assertNotNull("Search result should not be null", result);
         assertTrue("Status code should be successful", result.getStatusCode().is2xxSuccessful());

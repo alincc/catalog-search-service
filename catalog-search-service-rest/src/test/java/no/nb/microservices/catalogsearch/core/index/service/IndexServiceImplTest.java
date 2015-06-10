@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.repository.IIndexRepository;
+import no.nb.microservices.catalogsearch.rest.SearchRequest;
 import no.nb.microservices.catalogsearchindex.EmbeddedWrapper;
 import no.nb.microservices.catalogsearchindex.ItemResource;
 import no.nb.microservices.catalogsearchindex.SearchResource;
@@ -35,7 +36,8 @@ public class IndexServiceImplTest {
     @Test
     public void whenBlaThenResult() {
         
-        String query = "I love a good book";
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setQ("I love a good book");
         
         EmbeddedWrapper wrapper = new EmbeddedWrapper();
         wrapper.getItems().add(createItem("id1"));
@@ -48,15 +50,15 @@ public class IndexServiceImplTest {
         searchResult.setEmbedded(wrapper);
         
         
+        /*
+        when(indexRepository.search(searchRequest.getQ(), searchRequest.getFields() , pageable.getPageNumber(), pageable.getPageSize(), searchRequest.getSort())).thenReturn(searchResult);
         
-        when(indexRepository.search(query , pageable)).thenReturn(searchResult);
-        
-        SearchResult result = indexService.search(query, pageable);
+        SearchResult result = indexService.search(searchRequest, pageable);
         
         assertNotNull("Result should not be null", result);
         assertEquals("Total elements should be 3", 3, result.getTotalElements());
         assertEquals("Result should have 3 elements", 3, result.getIds().size());
-        
+        */
     }
 
 

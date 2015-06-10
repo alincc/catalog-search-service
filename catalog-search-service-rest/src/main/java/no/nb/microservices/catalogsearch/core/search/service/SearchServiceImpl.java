@@ -15,6 +15,7 @@ import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
 import no.nb.microservices.catalogsearch.core.search.exception.LatchException;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
+import no.nb.microservices.catalogsearch.rest.SearchRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,9 +49,9 @@ public class SearchServiceImpl implements ISearchService {
     }
 
     @Override
-    public SearchAggregated search(String query, Pageable pageable) {
+    public SearchAggregated search(SearchRequest searchRequest, Pageable pageable) {
         
-        SearchResult result = indexService.search(query, pageable);
+        SearchResult result = indexService.search(searchRequest, pageable);
 
         List<ItemResource> items = consumeItems(result);
         

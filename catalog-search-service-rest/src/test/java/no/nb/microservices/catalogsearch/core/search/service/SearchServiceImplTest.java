@@ -10,6 +10,7 @@ import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
+import no.nb.microservices.catalogsearch.rest.SearchRequest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,11 @@ import reactor.core.spec.Reactors;
 import reactor.event.Event;
 import reactor.function.Consumer;
 
+/**
+ * 
+ * @author ronnymikalsen
+ *
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class SearchServiceImplTest {
 
@@ -44,14 +50,15 @@ public class SearchServiceImplTest {
     @Test
     public void whenSearchingAndIndexReturnResultsThenResultShouldContainItems() {
 
-        String query = "I love Okstindan";
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest .setQ("I love Okstindan");
         Pageable pageable = new PageRequest(0, 10);
         
         SearchResult searchResult = new SearchResult(Arrays.asList("1", "2"), 100);
 
-        when(indexService.search(query, pageable )).thenReturn(searchResult);
+        when(indexService.search(searchRequest, pageable )).thenReturn(searchResult);
         
-        SearchAggregated result = searchService.search(query, pageable);
+        SearchAggregated result = searchService.search(searchRequest, pageable);
         
         assertNotNull("The result should not be null", result);
         assertEquals("The result size should be 2", 2, result.getPage().getContent().size());
@@ -59,3 +66,5 @@ public class SearchServiceImplTest {
     }
 
 }
+
+

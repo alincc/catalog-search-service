@@ -5,6 +5,7 @@ import java.util.List;
 
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.repository.IIndexRepository;
+import no.nb.microservices.catalogsearch.rest.SearchRequest;
 import no.nb.microservices.catalogsearchindex.ItemResource;
 import no.nb.microservices.catalogsearchindex.SearchResource;
 
@@ -12,6 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+/**
+ * 
+ * @author ronnymikalsen
+ *
+ */
 @Service
 public class IndexServiceImpl implements IIndexService {
 
@@ -24,8 +30,8 @@ public class IndexServiceImpl implements IIndexService {
     }
 
     @Override
-    public SearchResult search(String query, Pageable pageable) {
-        SearchResource result = indexRepository.search(query, pageable);
+    public SearchResult search(SearchRequest searchRequest, Pageable pageable) {
+        SearchResource result = indexRepository.search(searchRequest.getQ(), searchRequest.getFields(), pageable.getPageNumber(), pageable.getPageSize(), searchRequest.getSort());
 
         List<String> ids = new ArrayList<>();
         for (ItemResource item : result.getEmbedded().getItems()) {
