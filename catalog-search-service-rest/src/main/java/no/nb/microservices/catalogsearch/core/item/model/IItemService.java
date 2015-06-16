@@ -1,4 +1,4 @@
-package no.nb.microservices.catalogsearch.core.item.service;
+package no.nb.microservices.catalogsearch.core.item.model;
 
 import no.nb.microservices.catalogitem.rest.model.ItemResource;
 

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogitem.rest.model.Metadata;
 import no.nb.microservices.catalogitem.rest.model.TitelInfo;
+import no.nb.microservices.catalogsearch.core.item.model.IItemService;
 import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
 import org.junit.Before;

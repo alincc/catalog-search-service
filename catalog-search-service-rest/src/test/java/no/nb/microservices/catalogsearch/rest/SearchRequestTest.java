@@ -1,6 +1,7 @@
 package no.nb.microservices.catalogsearch.rest;
 
 import static org.junit.Assert.assertEquals;
+import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 
 import org.junit.Test;
 

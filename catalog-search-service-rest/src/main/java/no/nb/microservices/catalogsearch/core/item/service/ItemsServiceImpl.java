@@ -1,10 +1,12 @@
 package no.nb.microservices.catalogsearch.core.item.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nb.microservices.catalogitem.rest.model.ItemResource;
+import no.nb.microservices.catalogsearch.core.item.model.IItemService;
 import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
 @Service

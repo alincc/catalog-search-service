@@ -1,5 +1,6 @@
 package no.nb.microservices.catalogsearch.rest;
 
+import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.core.search.service.ISearchService;
 import no.nb.microservices.catalogsearch.rest.model.search.SearchResource;

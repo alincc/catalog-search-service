@@ -9,8 +9,8 @@ import java.util.Arrays;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
+import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
-import no.nb.microservices.catalogsearch.rest.SearchRequest;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package no.nb.microservices.catalogsearch.core.item.receiver;
 
 import no.nb.microservices.catalogitem.rest.model.ItemResource;
-import no.nb.microservices.catalogsearch.core.item.service.IItemService;
+import no.nb.microservices.catalogsearch.core.item.model.IItemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

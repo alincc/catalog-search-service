@@ -1,4 +1,4 @@
-package no.nb.microservices.catalogsearch.rest;
+package no.nb.microservices.catalogsearch.core.item.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
