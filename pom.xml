@@ -8,7 +8,7 @@
         <relativePath />
         <!-- lookup parent from repository -->
     </parent>
-    <groupId>no.nb.microservices.no.nb.microservices.catalogsearch</groupId>
+    <groupId>no.nb.microservices.catalogsearch</groupId>
     <artifactId>catalog-search-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
