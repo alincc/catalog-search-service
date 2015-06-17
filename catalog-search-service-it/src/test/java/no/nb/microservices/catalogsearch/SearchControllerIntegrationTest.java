@@ -59,17 +59,17 @@ public class SearchControllerIntegrationTest {
 
             @Override
             public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-                if (request.getPath().equals("/?q=Ola&fields=-title&page=0&size=10&sort=title%2Cdesc")) {
+                if (request.getPath().equals("/search?q=Ola&fields=-title&page=0&size=10&sort=title%2Cdesc")) {
                     return new MockResponse().setBody(searchResultMock).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
-                } else if (request.getPath().equals("/?q=Svenno&fields=-title&page=0&size=10&sort=title%2Cdesc")){
+                } else if (request.getPath().equals("/search?q=Svenno&fields=-title&page=0&size=10&sort=title%2Cdesc")){
                     return new MockResponse().setBody(searchResultMock2).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
-                } else if (request.getPath().equals("/item/id1")){
+                } else if (request.getPath().equals("/id1")){
                     return new MockResponse().setBody(itemId1Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/item/id2")){
+                } else if (request.getPath().equals("/id2")){
                     return new MockResponse().setBody(itemId2Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/item/id3")){
+                } else if (request.getPath().equals("/id3")){
                     return new MockResponse().setBody(itemId3Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/item/id4")){
+                } else if (request.getPath().equals("/id4")){
                     return new MockResponse().setBody(itemId4Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
                 }
                 return new MockResponse().setResponseCode(404);
