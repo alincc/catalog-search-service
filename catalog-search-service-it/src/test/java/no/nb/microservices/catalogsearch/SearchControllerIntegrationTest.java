@@ -59,9 +59,9 @@ public class SearchControllerIntegrationTest {
 
             @Override
             public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-                if (request.getPath().equals("/search?q=Ola&fields=-title&page=0&size=10&sort=title%2Cdesc")) {
+                if (request.getPath().equals("/?q=Ola&fields=-title&page=0&size=10&sort=title%2Cdesc")) {
                     return new MockResponse().setBody(searchResultMock).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
-                } else if (request.getPath().equals("/search?q=Svenno&fields=-title&page=0&size=10&sort=title%2Cdesc")){
+                } else if (request.getPath().equals("/?q=Svenno&fields=-title&page=0&size=10&sort=title%2Cdesc")){
                     return new MockResponse().setBody(searchResultMock2).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
                 } else if (request.getPath().equals("/item/id1")){
                     return new MockResponse().setBody(itemId1Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
@@ -89,7 +89,7 @@ public class SearchControllerIntegrationTest {
 
     @Test
     public void testSearch() throws Exception {
-        ResponseEntity<SearchResource> result = template.getForEntity("http://localhost:" + port + "/search?q=Ola&fields=-title&size=10&sort=title,desc", SearchResource.class);
+        ResponseEntity<SearchResource> result = template.getForEntity("http://localhost:" + port + "/?q=Ola&fields=-title&size=10&sort=title,desc", SearchResource.class);
 
         assertTrue("Status code should be 200 ", result.getStatusCode().is2xxSuccessful());
         assertNotNull("Response should have page element", result.getBody().getMetadata());
@@ -100,7 +100,7 @@ public class SearchControllerIntegrationTest {
 
     @Test
     public void testSearchIndexServiceOffline() throws Exception {
-        ResponseEntity<SearchResource> hystrixResult = template.getForEntity("http://localhost:" + port + "/search?q=Kalle&fields=-title&size=10&sort=title,desc", SearchResource.class);
+        ResponseEntity<SearchResource> hystrixResult = template.getForEntity("http://localhost:" + port + "/?q=Kalle&fields=-title&size=10&sort=title,desc", SearchResource.class);
 
         assertTrue(hystrixResult.getStatusCode().is2xxSuccessful());
         assertNotNull(hystrixResult.getBody().getMetadata());
@@ -112,7 +112,7 @@ public class SearchControllerIntegrationTest {
     @Test
     @Ignore("unstable")
     public void testItemServiceOffline() throws Exception {
-        ResponseEntity<SearchResource> hystrixResult = template.getForEntity("http://localhost:" + port + "/search?q=Svenno&fields=-title&size=10&sort=title,desc", SearchResource.class);
+        ResponseEntity<SearchResource> hystrixResult = template.getForEntity("http://localhost:" + port + "/?q=Svenno&fields=-title&size=10&sort=title,desc", SearchResource.class);
 
         assertTrue(hystrixResult.getStatusCode().is2xxSuccessful());
         assertNotNull(hystrixResult.getBody().getMetadata());

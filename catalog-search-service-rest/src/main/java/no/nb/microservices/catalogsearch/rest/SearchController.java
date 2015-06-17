@@ -47,7 +47,7 @@ public class SearchController {
     
     @ApiOperation(value = "Hello World", notes = "Hello World notes", response = String.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successful response") })
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<SearchResource> search(SearchRequest searchRequest, @PageableDefault Pageable pageable) {
 
         SearchAggregated result = searchService.search(searchRequest, pageable);

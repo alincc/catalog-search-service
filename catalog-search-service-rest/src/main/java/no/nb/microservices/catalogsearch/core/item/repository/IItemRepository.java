@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient("catalog-item-service")
 public interface IItemRepository {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/item/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     ItemResource getById(@PathVariable("id") String id);
 
 }
