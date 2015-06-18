@@ -48,6 +48,13 @@
             <groupId>no.nb.microservices.catalogitem</groupId>
             <artifactId>catalog-item-service-model</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>no.nb.commons</groupId>
+            <artifactId>commons-web-utils</artifactId>
+            <version>-12</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hateoas</artifactId>
@@ -138,9 +145,10 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
-                    <!-- The destination file for the code coverage report has to be set to the same value
-                         in the parent pom and in each module pom. Then JaCoCo will add up information in
-                         the same report, so that, it will give the cross-module code coverage. -->
+                    <!-- The destination file for the code coverage report 
+                        has to be set to the same value in the parent pom and in each module pom. 
+                        Then JaCoCo will add up information in the same report, so that, it will 
+                        give the cross-module code coverage. -->
                     <destFile>${project.basedir}/../target/jacoco.exec</destFile>
                 </configuration>
             </plugin>
