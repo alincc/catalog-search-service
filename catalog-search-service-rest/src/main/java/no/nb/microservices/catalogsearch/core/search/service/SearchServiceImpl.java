@@ -9,7 +9,6 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.PostConstruct;
 
-import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
@@ -26,6 +25,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.Reactor;
 import reactor.event.Event;
 import reactor.function.Consumer;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Service
 public class SearchServiceImpl implements ISearchService {
@@ -52,17 +53,17 @@ public class SearchServiceImpl implements ISearchService {
     public SearchAggregated search(SearchRequest searchRequest, Pageable pageable) {
         SearchResult result = indexService.search(searchRequest, pageable);
 
-        List<ItemResource> items = consumeItems(result);
+        List<JsonNode> items = consumeItems(result);
         
-        Page<ItemResource> page = new PageImpl<ItemResource>(items, pageable, result.getTotalElements());
+        Page<JsonNode> page = new PageImpl<JsonNode>(items, pageable, result.getTotalElements());
         return new SearchAggregated(page);
     }
 
 
-    private List<ItemResource> consumeItems(SearchResult result) {
+    private List<JsonNode> consumeItems(SearchResult result) {
         final CountDownLatch latch = new CountDownLatch(result.getIds().size());
 
-        List<ItemResource> items = Collections.synchronizedList(new ArrayList<>());
+        List<JsonNode> items = Collections.synchronizedList(new ArrayList<>());
         for (String id : result.getIds()) {
             reactor.notify("item", Event.wrap(new ItemWrapper(id, latch, items)));
         }

@@ -22,6 +22,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 /**
  * 
  * @author ronnymikalsen
@@ -49,7 +53,7 @@ public class SearchResultResourceAssemblerTest {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(2, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(new ArrayList<JsonNode>(), new PageRequest(2, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
 
         /**
@@ -67,7 +71,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenOnAnyPageReturnValueShouldHaveASelfLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(0, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(new ArrayList<JsonNode>(), new PageRequest(0, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -79,7 +83,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenOnFirstPageThenReturnValueShouldNotHaveAPreviousLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(0, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(new ArrayList<JsonNode>(), new PageRequest(0, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -91,7 +95,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenOnLastPageThenReturnValueShouldNotHaveANextLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(100, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(new ArrayList<JsonNode>(), new PageRequest(100, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -103,12 +107,12 @@ public class SearchResultResourceAssemblerTest {
     public void whenOnFirstPageAndSizeIsSmallerThanSizeThenReturnValueShouldHaveANextLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        ArrayList<ItemResource> items = new ArrayList<>();
+        ArrayList<JsonNode> items = new ArrayList<>();
         items.add(createItem("id1"));
         items.add(createItem("id2"));
         items.add(createItem("id3"));
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(items, new PageRequest(0, 2) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(items, new PageRequest(0, 2) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -120,7 +124,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenNotOnFirstPageThenReturnValueShouldHaveAFirstLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(2, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(new ArrayList<JsonNode>(), new PageRequest(2, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -132,7 +136,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenNotOnLastPageThenReturnValueShouldHaveALastLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(10, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(new ArrayList<JsonNode>(), new PageRequest(10, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -144,7 +148,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenItNotOnLastPageThenReturnValueShouldHaveALastLinkElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<ItemResource>(), new PageRequest(10, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(new ArrayList<JsonNode>(), new PageRequest(10, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -156,11 +160,11 @@ public class SearchResultResourceAssemblerTest {
     public void whenSearchResultHasItemsThenReturnValueShouldHaveItemsElement() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        ArrayList<ItemResource> items = new ArrayList<>();
+        ArrayList<JsonNode> items = new ArrayList<>();
         items.add(createItem("id1"));
         items.add(createItem("id2"));
         
-        Page<ItemResource> page = new PageImpl<ItemResource>(items, new PageRequest(0, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(items, new PageRequest(0, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -172,7 +176,7 @@ public class SearchResultResourceAssemblerTest {
     public void whenSearchResultHasNoItemsThenReturnValueShouldHaveNoItems() {
         SearchResultResourceAssembler searchResultResourceAssembler = new SearchResultResourceAssembler();
 
-        Page<ItemResource> page = new PageImpl<ItemResource>(new ArrayList<>(), new PageRequest(0, 10) , 1000);
+        Page<JsonNode> page = new PageImpl<JsonNode>(new ArrayList<JsonNode>(), new PageRequest(0, 10) , 1000);
         SearchAggregated searchAggregated = new SearchAggregated(page);
         
         SearchResource searchResultResource = searchResultResourceAssembler.toResource(searchAggregated);
@@ -180,8 +184,9 @@ public class SearchResultResourceAssemblerTest {
         
     }
     
-    private ItemResource createItem(String id) {
-        ItemResource item = new ItemResource(id);
+    private JsonNode createItem(String id) {
+        ObjectNode item = JsonNodeFactory.instance.objectNode();
+        item.put("id", id);
         return item;
     }
 }

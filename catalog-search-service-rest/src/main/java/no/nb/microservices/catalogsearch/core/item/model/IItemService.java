@@ -1,9 +1,9 @@
 package no.nb.microservices.catalogsearch.core.item.model;
 
-import no.nb.microservices.catalogitem.rest.model.ItemResource;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public interface IItemService {
 
-    ItemResource getById(String id);
+    JsonNode getById(String id);
 
 }

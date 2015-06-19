@@ -1,19 +1,19 @@
 package no.nb.microservices.catalogsearch.core.search.model;
 
-import no.nb.microservices.catalogitem.rest.model.ItemResource;
-
 import org.springframework.data.domain.Page;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class SearchAggregated {
 
-    private Page<ItemResource> page;
+    private Page<JsonNode> page;
 
-    public SearchAggregated(Page<ItemResource> page) {
+    public SearchAggregated(Page<JsonNode> page) {
         super();
         this.page = page;
     }
 
-    public Page<ItemResource> getPage() {
+    public Page<JsonNode> getPage() {
         return page;
     }
 

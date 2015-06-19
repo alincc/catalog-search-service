@@ -3,16 +3,21 @@ package no.nb.microservices.catalogsearch.rest.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nb.microservices.catalogitem.rest.model.ItemResource;
+import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * 
+ * @author ronnymikalsen
+ *
+ */
 public class EmbeddedWrapper {
-    private List<ItemResource> items = new ArrayList<>();
+    private List<JsonNode> items = new ArrayList<>();
 
-    public List<ItemResource> getItems() {
+    public List<JsonNode> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemResource> items) {
+    public void setItems(List<JsonNode> items) {
         this.items = items;
     }
 }

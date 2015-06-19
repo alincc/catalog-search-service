@@ -3,9 +3,6 @@ package no.nb.microservices.catalogsearch.core.item.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
-import no.nb.microservices.catalogitem.rest.model.ItemResource;
-import no.nb.microservices.catalogitem.rest.model.Metadata;
-import no.nb.microservices.catalogitem.rest.model.TitelInfo;
 import no.nb.microservices.catalogsearch.core.item.model.IItemService;
 import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
@@ -15,6 +12,15 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+/**
+ * 
+ * @author ronnymikalsen
+ *
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class ItemServiceImplTest {
 
@@ -33,19 +39,16 @@ public class ItemServiceImplTest {
         final String id = "id123";
         final String title = "Blah Title";
 
-        ItemResource itemResource = new ItemResource(id);
-        Metadata metadata = new Metadata();
-        TitelInfo titleInfo = new TitelInfo();
-        titleInfo.setTitle(title);
-        metadata.setTitleInfo(titleInfo);
-        itemResource.setMetadata(metadata );
-
-        when(itemRepository.getById(id)).thenReturn(itemResource );
+        ObjectNode node = JsonNodeFactory.instance.objectNode();
+        node.put("title", title);
         
-        ItemResource item = itemService.getById(id);
+        when(itemRepository.getById(id)).thenReturn(node);
+        
+        JsonNode item = itemService.getById(id);
         
         assertNotNull("Item should not be null", item);
-        assertEquals("Title should be \"Bla Title\"", title, item.getMetadata().getTitleInfo().getTitle());
+        
+        assertEquals("Title should be \"Bla Title\"", title, node.get("title").asText());
         
     }
     

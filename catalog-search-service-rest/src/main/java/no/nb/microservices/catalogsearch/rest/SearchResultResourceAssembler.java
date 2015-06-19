@@ -1,6 +1,5 @@
 package no.nb.microservices.catalogsearch.rest;
 
-import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.rest.model.search.SearchResource;
 
@@ -15,6 +14,8 @@ import org.springframework.hateoas.UriTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class SearchResultResourceAssembler implements ResourceAssembler<SearchAggregated, SearchResource> {
 
     private final HateoasPageableHandlerMethodArgumentResolver pageableResolver = new HateoasPageableHandlerMethodArgumentResolver();
@@ -24,7 +25,7 @@ public class SearchResultResourceAssembler implements ResourceAssembler<SearchAg
         
         SearchResource resources = new SearchResource(asPageMetadata(result.getPage()));
 
-        for (ItemResource item : result.getPage().getContent()) {
+        for (JsonNode item : result.getPage().getContent()) {
             resources.getEmbedded().getItems().add(item);
         }
         

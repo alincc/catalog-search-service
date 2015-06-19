@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
-import no.nb.microservices.catalogitem.rest.model.ItemResource;
 import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.core.search.service.ISearchService;
@@ -26,6 +25,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 /**
  * 
@@ -67,9 +69,10 @@ public class SearchControllerTest {
         searchRequest.setQ("Supersonic");
         
         PageRequest pageable = new PageRequest(0, 10);
-        List<ItemResource> items = Arrays.asList(new ItemResource("id1"), new ItemResource("id2"));
+
+        List<JsonNode> items = Arrays.asList(JsonNodeFactory.instance.objectNode(), JsonNodeFactory.instance.objectNode());
         
-        SearchAggregated searchResult = new SearchAggregated(new PageImpl<ItemResource>(items, pageable, 100));
+        SearchAggregated searchResult = new SearchAggregated(new PageImpl<JsonNode>(items, pageable, 100));
         when(searchService.search(searchRequest, pageable)).thenReturn(searchResult);
         
         ResponseEntity<SearchResource> result = searchController.search(searchRequest, pageable);
