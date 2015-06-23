@@ -3,7 +3,7 @@ package no.nb.microservices.catalogsearch.core.item.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
-import no.nb.microservices.catalogsearch.core.item.model.IItemService;
+import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
 import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
 import org.junit.Before;
@@ -42,9 +42,10 @@ public class ItemServiceImplTest {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put("title", title);
         
-        when(itemRepository.getById(id)).thenReturn(node);
+        when(itemRepository.getById(id, null, null, null, null)).thenReturn(node);
         
-        JsonNode item = itemService.getById(id);
+        ItemWrapper itemWrapper = new ItemWrapper(id, null, null);
+        JsonNode item = itemService.getById(itemWrapper);
         
         assertNotNull("Item should not be null", item);
         

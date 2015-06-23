@@ -6,12 +6,14 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
+import no.nb.commons.web.util.UserUtils;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
 import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +21,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import reactor.core.Environment;
 import reactor.core.Reactor;
@@ -45,6 +50,21 @@ public class SearchServiceImplTest {
         Consumer<Event<ItemWrapper>> consumer = new ItemReceiverMock();
         searchService = new SearchServiceImpl(reactor, indexService, consumer);
         searchService.init();
+
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/v1/search?q=Junit");
+
+        String ip = "123.45.123.123";
+        request.addHeader(UserUtils.REAL_IP_HEADER, ip);
+
+        ServletRequestAttributes attributes = new ServletRequestAttributes(request);
+        RequestContextHolder.setRequestAttributes(attributes);
+        
+        RequestContextHolder.setRequestAttributes(attributes);
+    }
+    
+    @After
+    public void cleanUp() {
+        RequestContextHolder.resetRequestAttributes();
     }
     
     @Test

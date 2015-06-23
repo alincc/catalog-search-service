@@ -11,6 +11,8 @@ public class ItemWrapper {
     private CountDownLatch latch;
     private List<JsonNode> items;
     
+    private RequestInfo requestInfo = new RequestInfo();
+    
     public ItemWrapper(String id, CountDownLatch latch, List<JsonNode> items) {
         super();
         this.id = id;
@@ -28,6 +30,10 @@ public class ItemWrapper {
 
     public String getId() {
         return id;
+    }
+
+    public RequestInfo getRequestInfo() {
+        return requestInfo;
     }
 
 }

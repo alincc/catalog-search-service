@@ -52,7 +52,7 @@
         <dependency>
             <groupId>no.nb.commons</groupId>
             <artifactId>commons-web-utils</artifactId>
-            <version>-12</version>
+            <version>-14</version>
         </dependency>
 
         <dependency>

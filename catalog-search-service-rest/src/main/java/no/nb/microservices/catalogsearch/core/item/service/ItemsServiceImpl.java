@@ -1,13 +1,15 @@
 package no.nb.microservices.catalogsearch.core.item.service;
 
-import no.nb.microservices.catalogitem.rest.model.ItemResource;
-import no.nb.microservices.catalogsearch.core.item.model.IItemService;
+import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
+import no.nb.microservices.catalogsearch.core.item.receiver.RequestInfo;
 import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @Service
@@ -23,12 +25,16 @@ public class ItemsServiceImpl implements IItemService {
 
     @Override
     @HystrixCommand(fallbackMethod = "getDefaultItem")
-    public JsonNode getById(String id) {
-        return itemRepository.getById(id);
+    public JsonNode getById(ItemWrapper itemWrapper) {
+        RequestInfo requestInfo = itemWrapper.getRequestInfo();
+        return itemRepository.getById(itemWrapper.getId(), requestInfo.getxHost(), requestInfo.getxPort(), requestInfo.getxRealIp(), requestInfo.getSsoToken());
     }
 
-    public ItemResource getDefaultItem(String id) {
-        return new ItemResource(id);
+    @HystrixCommand
+    public JsonNode getDefaultItem(ItemWrapper itemWrapper) {
+        ObjectNode node = JsonNodeFactory.instance.objectNode();
+        node.put("id", itemWrapper.getId());
+        return node;
     }
 
 }
