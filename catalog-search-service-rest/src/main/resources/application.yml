@@ -3,6 +3,10 @@ info:
     name: catalog-search-service
     description: Search in the National Library of Norway catalog
 
+spring:
+  application:
+    name: catalog-search-service
+
 endpoints:
   restart:
     enabled: true
@@ -28,4 +32,7 @@ eureka:
     preferIpAddress: true
   client:
     serviceUrl:
-      defaultZone: http://discovery:8761/eureka/    
+      defaultZone: http://discovery:8761/eureka/
+      
+zipkin:
+    collector-hostname: zipkinCollector

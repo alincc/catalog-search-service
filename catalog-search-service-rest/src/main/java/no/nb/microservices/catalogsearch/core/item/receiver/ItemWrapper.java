@@ -3,6 +3,8 @@ package no.nb.microservices.catalogsearch.core.item.receiver;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import org.apache.htrace.Span;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class ItemWrapper {
@@ -10,6 +12,7 @@ public class ItemWrapper {
     private String id;
     private CountDownLatch latch;
     private List<JsonNode> items;
+    private Span span;
     
     private RequestInfo requestInfo = new RequestInfo();
     
@@ -34,6 +37,14 @@ public class ItemWrapper {
 
     public RequestInfo getRequestInfo() {
         return requestInfo;
+    }
+
+    public Span getSpan() {
+        return span;
+    }
+
+    public void setSpan(Span span) {
+        this.span = span;
     }
 
 }

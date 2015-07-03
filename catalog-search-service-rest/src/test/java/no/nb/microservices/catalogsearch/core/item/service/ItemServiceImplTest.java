@@ -42,7 +42,7 @@ public class ItemServiceImplTest {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put("title", title);
         
-        when(itemRepository.getById(id, null, null, null, null)).thenReturn(node);
+        when(itemRepository.getById(id, null, null, null, null, 0, 0, 0)).thenReturn(node);
         
         ItemWrapper itemWrapper = new ItemWrapper(id, null, null);
         JsonNode item = itemService.getById(itemWrapper);

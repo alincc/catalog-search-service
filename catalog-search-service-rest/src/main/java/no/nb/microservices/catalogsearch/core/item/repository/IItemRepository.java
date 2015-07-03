@@ -17,6 +17,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 public interface IItemRepository {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    JsonNode getById(@PathVariable("id") String id, @RequestParam("X-Forwarded-Host") String xHost, @RequestParam("X-Forwarded-Port") String xPort, @RequestParam("X-Original-IP-Fra-Frontend") String xRealIp, @RequestParam("amsso") String ssoToken);
+    JsonNode getById(@PathVariable("id") String id, 
+            @RequestParam("X-Forwarded-Host") String xHost, 
+            @RequestParam("X-Forwarded-Port") String xPort, 
+            @RequestParam("X-Original-IP-Fra-Frontend") String xRealIp, 
+            @RequestParam("amsso") String ssoToken,
+            @RequestParam("X-B3-TraceId") long traceId,
+            @RequestParam("X-B3-SpanId") long spanId,
+            @RequestParam("X-B3-ParentSpanId") long parentSpanId);
 
 }

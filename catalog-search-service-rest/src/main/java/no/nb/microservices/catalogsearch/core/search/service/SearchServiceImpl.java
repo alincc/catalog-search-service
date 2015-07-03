@@ -19,6 +19,9 @@ import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.exception.LatchException;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 
+import org.apache.htrace.Span;
+import org.apache.htrace.Trace;
+import org.apache.htrace.TraceScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -94,6 +97,14 @@ public class SearchServiceImpl implements ISearchService {
         itemWrapper.getRequestInfo().setxPort(request.getHeader(XForwardedFeignInterceptor.X_FORWARDED_PORT));
         itemWrapper.getRequestInfo().setxRealIp(UserUtils.getClientIp(request));
         itemWrapper.getRequestInfo().setSsoToken(UserUtils.getSsoToken(request));
+        
+        System.out.println("tjoa");
+            itemWrapper.setSpan(Trace.currentSpan());
+            //itemWrapper.setSpan((Span)request.getAttribute("span"));
+
+        
+        System.out.println("tjoaa");
+        System.out.println(itemWrapper.getSpan());
         return itemWrapper;
     }
 

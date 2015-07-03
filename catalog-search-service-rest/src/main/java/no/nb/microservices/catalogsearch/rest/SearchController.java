@@ -1,5 +1,6 @@
 package no.nb.microservices.catalogsearch.rest;
 
+import no.nb.htrace.annotations.Traceable;
 import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.core.search.service.ISearchService;
@@ -46,6 +47,7 @@ public class SearchController {
     
     @ApiOperation(value = "Hello World", notes = "Hello World notes", response = String.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successful response") })
+    @Traceable(description="search")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<SearchResource> search(SearchRequest searchRequest, @PageableDefault Pageable pageable) {
 

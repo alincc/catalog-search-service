@@ -27,7 +27,18 @@ public class ItemsServiceImpl implements IItemService {
     @HystrixCommand(fallbackMethod = "getDefaultItem")
     public JsonNode getById(ItemWrapper itemWrapper) {
         RequestInfo requestInfo = itemWrapper.getRequestInfo();
-        return itemRepository.getById(itemWrapper.getId(), requestInfo.getxHost(), requestInfo.getxPort(), requestInfo.getxRealIp(), requestInfo.getSsoToken());
+        
+        System.out.println("SPAN");
+        System.out.println(itemWrapper.getSpan());
+        
+        return itemRepository.getById(itemWrapper.getId(), 
+                requestInfo.getxHost(), 
+                requestInfo.getxPort(), 
+                requestInfo.getxRealIp(), 
+                requestInfo.getSsoToken(),
+                itemWrapper.getSpan().getTraceId(),
+                itemWrapper.getSpan().getSpanId(),
+                itemWrapper.getSpan().getParentId());
     }
 
     @HystrixCommand
