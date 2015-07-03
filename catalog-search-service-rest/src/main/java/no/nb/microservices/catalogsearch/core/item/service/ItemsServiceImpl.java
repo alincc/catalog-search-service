@@ -30,15 +30,15 @@ public class ItemsServiceImpl implements IItemService {
         
         System.out.println("SPAN");
         System.out.println(itemWrapper.getSpan());
-        
+        System.out.println(itemWrapper.getSpan().getTraceId());
+        System.out.println(itemWrapper.getSpan().getSpanId());
         return itemRepository.getById(itemWrapper.getId(), 
                 requestInfo.getxHost(), 
                 requestInfo.getxPort(), 
                 requestInfo.getxRealIp(), 
                 requestInfo.getSsoToken(),
                 itemWrapper.getSpan().getTraceId(),
-                itemWrapper.getSpan().getSpanId(),
-                itemWrapper.getSpan().getParentId());
+                itemWrapper.getSpan().getSpanId());
     }
 
     @HystrixCommand

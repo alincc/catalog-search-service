@@ -23,7 +23,6 @@ public interface IItemRepository {
             @RequestParam("X-Original-IP-Fra-Frontend") String xRealIp, 
             @RequestParam("amsso") String ssoToken,
             @RequestParam("X-B3-TraceId") long traceId,
-            @RequestParam("X-B3-SpanId") long spanId,
-            @RequestParam("X-B3-ParentSpanId") long parentSpanId);
+            @RequestParam("X-B3-SpanId") long spanId);
 
 }

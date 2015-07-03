@@ -6,6 +6,9 @@ import static org.mockito.Mockito.when;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
 import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
+import org.apache.htrace.Span;
+import org.apache.htrace.Trace;
+import org.apache.htrace.TraceInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,9 +45,13 @@ public class ItemServiceImplTest {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put("title", title);
         
-        when(itemRepository.getById(id, null, null, null, null, 0, 0, 0)).thenReturn(node);
         
         ItemWrapper itemWrapper = new ItemWrapper(id, null, null);
+        Span span = Trace.startSpan("tester", new TraceInfo(1, 1)).getSpan();
+        itemWrapper.setSpan(span);
+
+        when(itemRepository.getById(id, null, null, null, null, span.getTraceId(), span.getSpanId())).thenReturn(node);
+
         JsonNode item = itemService.getById(itemWrapper);
         
         assertNotNull("Item should not be null", item);

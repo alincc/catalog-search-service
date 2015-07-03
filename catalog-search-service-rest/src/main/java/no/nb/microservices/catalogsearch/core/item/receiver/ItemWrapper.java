@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.htrace.Span;
+import org.apache.htrace.Trace;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -12,7 +13,7 @@ public class ItemWrapper {
     private String id;
     private CountDownLatch latch;
     private List<JsonNode> items;
-    private Span span;
+    private Span span = Trace.currentSpan();
     
     private RequestInfo requestInfo = new RequestInfo();
     
