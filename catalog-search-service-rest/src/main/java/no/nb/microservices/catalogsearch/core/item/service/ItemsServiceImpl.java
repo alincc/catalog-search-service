@@ -1,9 +1,6 @@
 package no.nb.microservices.catalogsearch.core.item.service;
 
-import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
-import no.nb.microservices.catalogsearch.core.item.receiver.RequestInfo;
-import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
-
+import org.apache.htrace.Trace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +8,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
+import no.nb.microservices.catalogsearch.core.item.receiver.RequestInfo;
+import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
 @Service
 public class ItemsServiceImpl implements IItemService {
@@ -28,17 +29,17 @@ public class ItemsServiceImpl implements IItemService {
     public JsonNode getById(ItemWrapper itemWrapper) {
         RequestInfo requestInfo = itemWrapper.getRequestInfo();
         
-        System.out.println("SPAN");
-        System.out.println(itemWrapper.getSpan());
-        System.out.println(itemWrapper.getSpan().getTraceId());
-        System.out.println(itemWrapper.getSpan().getSpanId());
-        return itemRepository.getById(itemWrapper.getId(), 
+        Trace.continueSpan(itemWrapper.getSpan());
+        try {
+            return itemRepository.getById(itemWrapper.getId(), 
                 requestInfo.getxHost(), 
                 requestInfo.getxPort(), 
                 requestInfo.getxRealIp(), 
-                requestInfo.getSsoToken(),
-                itemWrapper.getSpan().getTraceId(),
-                itemWrapper.getSpan().getSpanId());
+                requestInfo.getSsoToken());
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @HystrixCommand

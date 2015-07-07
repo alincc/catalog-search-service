@@ -8,11 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-/**
- * 
- * @author ronnymikalsen
- *
- */
 @FeignClient("catalog-item-service")
 public interface IItemRepository {
 
@@ -21,8 +16,6 @@ public interface IItemRepository {
             @RequestParam("X-Forwarded-Host") String xHost, 
             @RequestParam("X-Forwarded-Port") String xPort, 
             @RequestParam("X-Original-IP-Fra-Frontend") String xRealIp, 
-            @RequestParam("amsso") String ssoToken,
-            @RequestParam("X-B3-TraceId") long traceId,
-            @RequestParam("X-B3-SpanId") long spanId);
+            @RequestParam("amsso") String ssoToken);
 
 }

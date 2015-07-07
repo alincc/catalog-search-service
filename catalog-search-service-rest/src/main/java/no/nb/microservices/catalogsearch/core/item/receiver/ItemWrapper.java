@@ -3,12 +3,14 @@ package no.nb.microservices.catalogsearch.core.item.receiver;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import no.nb.htrace.core.Traceable;
+
 import org.apache.htrace.Span;
 import org.apache.htrace.Trace;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class ItemWrapper {
+public class ItemWrapper implements Traceable {
 
     private String id;
     private CountDownLatch latch;

@@ -10,18 +10,7 @@ import java.util.concurrent.CountDownLatch;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
-import no.nb.commons.web.util.UserUtils;
-import no.nb.commons.web.xforwarded.feign.XForwardedFeignInterceptor;
-import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
-import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
-import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
-import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
-import no.nb.microservices.catalogsearch.core.search.exception.LatchException;
-import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
-
-import org.apache.htrace.Span;
 import org.apache.htrace.Trace;
-import org.apache.htrace.TraceScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,17 +19,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import no.nb.commons.web.util.UserUtils;
+import no.nb.commons.web.xforwarded.feign.XForwardedFeignInterceptor;
+import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
+import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
+import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
+import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
+import no.nb.microservices.catalogsearch.core.search.exception.LatchException;
+import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import reactor.core.Reactor;
 import reactor.event.Event;
 import reactor.function.Consumer;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-/**
- * 
- * @author ronnymikalsen
- *
- */
 @Service
 public class SearchServiceImpl implements ISearchService {
 
@@ -98,13 +90,8 @@ public class SearchServiceImpl implements ISearchService {
         itemWrapper.getRequestInfo().setxRealIp(UserUtils.getClientIp(request));
         itemWrapper.getRequestInfo().setSsoToken(UserUtils.getSsoToken(request));
         
-        System.out.println("tjoa");
-            itemWrapper.setSpan(Trace.currentSpan());
-            //itemWrapper.setSpan((Span)request.getAttribute("span"));
+        itemWrapper.setSpan(Trace.currentSpan());
 
-        
-        System.out.println("tjoaa");
-        System.out.println(itemWrapper.getSpan());
         return itemWrapper;
     }
 

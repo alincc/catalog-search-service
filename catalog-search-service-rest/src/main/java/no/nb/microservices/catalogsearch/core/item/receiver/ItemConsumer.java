@@ -1,14 +1,13 @@
 package no.nb.microservices.catalogsearch.core.item.receiver;
 
-import no.nb.microservices.catalogsearch.core.item.service.IItemService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import no.nb.microservices.catalogsearch.core.item.service.IItemService;
 import reactor.event.Event;
 import reactor.function.Consumer;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 @Service
 public class ItemConsumer implements Consumer<Event<ItemWrapper>> {

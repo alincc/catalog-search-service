@@ -3,12 +3,7 @@ package no.nb.microservices.catalogsearch.core.item.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
-import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
-import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
-import org.apache.htrace.Span;
-import org.apache.htrace.Trace;
-import org.apache.htrace.TraceInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,11 +14,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-/**
- * 
- * @author ronnymikalsen
- *
- */
+import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
+import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ItemServiceImplTest {
 
@@ -47,10 +40,8 @@ public class ItemServiceImplTest {
         
         
         ItemWrapper itemWrapper = new ItemWrapper(id, null, null);
-        Span span = Trace.startSpan("tester", new TraceInfo(1, 1)).getSpan();
-        itemWrapper.setSpan(span);
 
-        when(itemRepository.getById(id, null, null, null, null, span.getTraceId(), span.getSpanId())).thenReturn(node);
+        when(itemRepository.getById(id, null, null, null, null)).thenReturn(node);
 
         JsonNode item = itemService.getById(itemWrapper);
         
