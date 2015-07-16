@@ -1,6 +1,6 @@
 package no.nb.microservices.catalogsearch.rest;
 
-import no.nb.htrace.annotations.Traceable;
+import no.nb.htrace.annotation.Traceable;
 import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.core.search.service.ISearchService;
