@@ -29,6 +29,7 @@ import com.wordnik.swagger.annotations.ApiResponses;
  *
  */
 @RestController
+@RequestMapping(value = "/catalog/search")
 @Api(value = "/", description = "Home api")
 public class SearchController {
 
