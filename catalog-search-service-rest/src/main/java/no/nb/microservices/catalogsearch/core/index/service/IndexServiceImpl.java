@@ -3,7 +3,9 @@ package no.nb.microservices.catalogsearch.core.index.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.repository.IIndexRepository;
@@ -11,15 +13,6 @@ import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearchindex.ItemResource;
 import no.nb.microservices.catalogsearchindex.SearchResource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-/**
- * 
- * @author ronnymikalsen
- *
- */
 @Service
 public class IndexServiceImpl implements IIndexService {
 
