@@ -17,7 +17,7 @@ public class ItemWrapper implements Traceable {
     private List<JsonNode> items;
     private Span span = Trace.currentSpan();
     
-    private RequestInfo requestInfo = new RequestInfo();
+    private SecurityInfo requestInfo = new SecurityInfo();
     
     public ItemWrapper(String id, CountDownLatch latch, List<JsonNode> items) {
         super();
@@ -38,10 +38,11 @@ public class ItemWrapper implements Traceable {
         return id;
     }
 
-    public RequestInfo getRequestInfo() {
+    public SecurityInfo getSecurityInfo() {
         return requestInfo;
     }
 
+    @Override
     public Span getSpan() {
         return span;
     }

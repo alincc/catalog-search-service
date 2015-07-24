@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
-import no.nb.microservices.catalogsearch.core.item.receiver.RequestInfo;
+import no.nb.microservices.catalogsearch.core.item.receiver.SecurityInfo;
 import no.nb.microservices.catalogsearch.core.item.repository.IItemRepository;
 
 @Service
@@ -27,19 +27,14 @@ public class ItemsServiceImpl implements IItemService {
     @Override
     @HystrixCommand(fallbackMethod = "getDefaultItem")
     public JsonNode getById(ItemWrapper itemWrapper) {
-        RequestInfo requestInfo = itemWrapper.getRequestInfo();
+        SecurityInfo requestInfo = itemWrapper.getSecurityInfo();
         
         Trace.continueSpan(itemWrapper.getSpan());
-        try {
-            return itemRepository.getById(itemWrapper.getId(), 
-                requestInfo.getxHost(), 
-                requestInfo.getxPort(), 
-                requestInfo.getxRealIp(), 
-                requestInfo.getSsoToken());
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return itemRepository.getById(itemWrapper.getId(), 
+            requestInfo.getxHost(), 
+            requestInfo.getxPort(), 
+            requestInfo.getxRealIp(), 
+            requestInfo.getSsoToken());
     }
 
     @HystrixCommand

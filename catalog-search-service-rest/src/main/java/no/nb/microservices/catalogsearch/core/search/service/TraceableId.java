@@ -1,15 +1,11 @@
 package no.nb.microservices.catalogsearch.core.search.service;
 
-import java.io.Serializable;
-
 import org.apache.htrace.Span;
 
 import no.nb.htrace.core.Traceable;
 import no.nb.microservices.catalogsearch.core.item.receiver.SecurityInfo;
 
-public class TraceableId implements Traceable, Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class TraceableId implements Traceable {
 
     private final String id;
     private final Span span;

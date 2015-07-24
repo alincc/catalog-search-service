@@ -85,10 +85,10 @@ public class SearchServiceImpl implements ISearchService {
         
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         
-        itemWrapper.getRequestInfo().setxHost(request.getHeader(XForwardedFeignInterceptor.X_FORWARDED_HOST));
-        itemWrapper.getRequestInfo().setxPort(request.getHeader(XForwardedFeignInterceptor.X_FORWARDED_PORT));
-        itemWrapper.getRequestInfo().setxRealIp(UserUtils.getClientIp(request));
-        itemWrapper.getRequestInfo().setSsoToken(UserUtils.getSsoToken(request));
+        itemWrapper.getSecurityInfo().setxHost(request.getHeader(XForwardedFeignInterceptor.X_FORWARDED_HOST));
+        itemWrapper.getSecurityInfo().setxPort(request.getHeader(XForwardedFeignInterceptor.X_FORWARDED_PORT));
+        itemWrapper.getSecurityInfo().setxRealIp(UserUtils.getClientIp(request));
+        itemWrapper.getSecurityInfo().setSsoToken(UserUtils.getSsoToken(request));
         
         itemWrapper.setSpan(Trace.currentSpan());
 
