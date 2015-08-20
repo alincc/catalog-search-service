@@ -39,12 +39,12 @@
         <dependency>
             <groupId>no.nb.htrace</groupId>
             <artifactId>htrace-impl-spring</artifactId>
-            <version>0.0.1-26</version>
+            <version>0.0.1-32</version>
         </dependency>
         <dependency>
             <groupId>no.nb.htrace</groupId>
             <artifactId>htrace-core</artifactId>
-            <version>0.0.1-26</version>
+            <version>0.0.1-32</version>
         </dependency>
 
         <dependency>
