@@ -17,6 +17,7 @@ public class SearchRequest implements Serializable {
     private String q;
     private String fields;
     private List<String> sort = new ArrayList<>();
+    private String aggs;
 
     public SearchRequest() {
         super();
@@ -45,6 +46,14 @@ public class SearchRequest implements Serializable {
 
     public void setSort(String[] sort) {
         this.sort = Arrays.asList(sort);
+    }
+
+    public String getAggs() {
+        return aggs;
+    }
+
+    public void setAggs(String aggs) {
+        this.aggs = aggs;
     }
 
     private void removeEncoding() {

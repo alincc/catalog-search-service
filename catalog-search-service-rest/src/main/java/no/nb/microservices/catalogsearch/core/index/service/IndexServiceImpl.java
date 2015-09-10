@@ -1,17 +1,16 @@
 package no.nb.microservices.catalogsearch.core.index.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.repository.IIndexRepository;
 import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearchindex.ItemResource;
 import no.nb.microservices.catalogsearchindex.SearchResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class IndexServiceImpl implements IIndexService {
@@ -26,13 +25,20 @@ public class IndexServiceImpl implements IIndexService {
 
     @Override
     public SearchResult search(SearchRequest searchRequest, Pageable pageable) {
-        SearchResource result = indexRepository.search(searchRequest.getQ(), searchRequest.getFields(), pageable.getPageNumber(), pageable.getPageSize(), searchRequest.getSort());
+
+        SearchResource result = indexRepository.search(
+                searchRequest.getQ(),
+                searchRequest.getFields(),
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                searchRequest.getSort(),
+                searchRequest.getAggs());
 
         List<String> ids = new ArrayList<>();
         for (ItemResource item : result.getEmbedded().getItems()) {
             ids.add(item.getItemId());
         }
-        return new SearchResult(ids, result.getMetadata().getTotalElements());
+        return new SearchResult(ids, result.getMetadata().getTotalElements(), result.getEmbedded().getAggregations());
     }
 
 }

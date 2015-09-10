@@ -1,18 +1,12 @@
 package no.nb.microservices.catalogsearch.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
 import no.nb.microservices.catalogsearch.core.search.service.ISearchService;
 import no.nb.microservices.catalogsearch.rest.model.search.SearchResource;
-
+import no.nb.microservices.catalogsearchindex.AggregationResource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +20,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -41,6 +39,9 @@ public class SearchControllerTest {
     private ISearchService searchService;
 
     private SearchController searchController;
+
+    @Mock
+    private SearchResultResourceAssembler searchResultResourceAssembler;
 
     @Before
     public void init() {
@@ -72,7 +73,7 @@ public class SearchControllerTest {
 
         List<JsonNode> items = Arrays.asList(JsonNodeFactory.instance.objectNode(), JsonNodeFactory.instance.objectNode());
         
-        SearchAggregated searchResult = new SearchAggregated(new PageImpl<JsonNode>(items, pageable, 100));
+        SearchAggregated searchResult = new SearchAggregated(new PageImpl<JsonNode>(items, pageable, 100), null);
         when(searchService.search(searchRequest, pageable)).thenReturn(searchResult);
         
         ResponseEntity<SearchResource> result = searchController.search(searchRequest, pageable);
@@ -83,4 +84,25 @@ public class SearchControllerTest {
 
     }
 
+    @Test
+    public void whenSearchWithAggregationThenReturnListOfAggregations() {
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setQ("TestSearch");
+        searchRequest.setAggs("ddc1, mediatype");
+
+        PageRequest pageable = new PageRequest(0, 10);
+
+        List<JsonNode> items = Arrays.asList(JsonNodeFactory.instance.objectNode(), JsonNodeFactory.instance.objectNode());
+
+        List<AggregationResource> aggregations = new ArrayList<>();
+        aggregations.add(new AggregationResource("ddc1"));
+        aggregations.add(new AggregationResource("mediatype"));
+
+        SearchAggregated searchResult = new SearchAggregated(new PageImpl<JsonNode>(items, pageable, 100), aggregations);
+
+        when(searchService.search(searchRequest, pageable)).thenReturn(searchResult);
+        ResponseEntity<SearchResource> result = searchController.search(searchRequest, pageable);
+
+        assertEquals(2, result.getBody().getEmbedded().getAggregations().size());
+    }
 }

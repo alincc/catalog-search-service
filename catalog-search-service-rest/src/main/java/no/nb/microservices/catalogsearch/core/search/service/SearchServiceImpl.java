@@ -1,26 +1,6 @@
 package no.nb.microservices.catalogsearch.core.search.service;
 
-import static reactor.event.selector.Selectors.$;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.htrace.Trace;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import no.nb.commons.web.util.UserUtils;
 import no.nb.commons.web.xforwarded.feign.XForwardedFeignInterceptor;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
@@ -29,9 +9,26 @@ import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
 import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.exception.LatchException;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
+import org.apache.htrace.Trace;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import reactor.core.Reactor;
 import reactor.event.Event;
 import reactor.function.Consumer;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import static reactor.event.selector.Selectors.$;
 
 @Service
 public class SearchServiceImpl implements ISearchService {
@@ -59,11 +56,10 @@ public class SearchServiceImpl implements ISearchService {
         SearchResult result = indexService.search(searchRequest, pageable);
 
         List<JsonNode> items = consumeItems(result);
-        
-        Page<JsonNode> page = new PageImpl<JsonNode>(items, pageable, result.getTotalElements());
-        return new SearchAggregated(page);
-    }
 
+        Page<JsonNode> page = new PageImpl<JsonNode>(items, pageable, result.getTotalElements());
+        return new SearchAggregated(page, result.getAggregations());
+    }
 
     private List<JsonNode> consumeItems(SearchResult result) {
         final CountDownLatch latch = new CountDownLatch(result.getIds().size());
@@ -75,21 +71,17 @@ public class SearchServiceImpl implements ISearchService {
             reactor.notify("item", Event.wrap(itemWrapper ));
         }
         waitForAllItemsToFinish(latch);
-        
         return items;
     }
 
-    private ItemWrapper createItemWrapper(final CountDownLatch latch,
-            List<JsonNode> items, String id) {
+    private ItemWrapper createItemWrapper(final CountDownLatch latch, List<JsonNode> items, String id) {
         ItemWrapper itemWrapper = new ItemWrapper(id, latch, items);
-        
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        
+
         itemWrapper.getSecurityInfo().setxHost(request.getHeader(XForwardedFeignInterceptor.X_FORWARDED_HOST));
         itemWrapper.getSecurityInfo().setxPort(request.getHeader(XForwardedFeignInterceptor.X_FORWARDED_PORT));
         itemWrapper.getSecurityInfo().setxRealIp(UserUtils.getClientIp(request));
         itemWrapper.getSecurityInfo().setSsoToken(UserUtils.getSsoToken(request));
-        
         itemWrapper.setSpan(Trace.currentSpan());
 
         return itemWrapper;
@@ -97,12 +89,10 @@ public class SearchServiceImpl implements ISearchService {
 
 
     private void waitForAllItemsToFinish(final CountDownLatch latch) {
-
             try {
                 latch.await();
             } catch (InterruptedException e) {
                 throw new LatchException(e);
             }
     }
-
 }

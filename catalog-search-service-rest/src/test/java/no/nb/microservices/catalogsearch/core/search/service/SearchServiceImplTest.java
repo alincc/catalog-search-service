@@ -1,18 +1,11 @@
 package no.nb.microservices.catalogsearch.core.search.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-
 import no.nb.commons.web.util.UserUtils;
 import no.nb.microservices.catalogsearch.core.index.model.SearchResult;
 import no.nb.microservices.catalogsearch.core.index.service.IIndexService;
 import no.nb.microservices.catalogsearch.core.item.receiver.ItemWrapper;
 import no.nb.microservices.catalogsearch.core.item.service.SearchRequest;
 import no.nb.microservices.catalogsearch.core.search.model.SearchAggregated;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,12 +17,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import reactor.core.Environment;
 import reactor.core.Reactor;
 import reactor.core.spec.Reactors;
 import reactor.event.Event;
 import reactor.function.Consumer;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -74,7 +72,7 @@ public class SearchServiceImplTest {
         searchRequest .setQ("I love Okstindan");
         Pageable pageable = new PageRequest(0, 10);
         
-        SearchResult searchResult = new SearchResult(Arrays.asList("1", "2"), 100);
+        SearchResult searchResult = new SearchResult(Arrays.asList("1", "2"), 100, null);
 
         when(indexService.search(searchRequest, pageable )).thenReturn(searchResult);
         
