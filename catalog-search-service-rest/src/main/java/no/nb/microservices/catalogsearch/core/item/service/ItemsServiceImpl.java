@@ -31,16 +31,20 @@ public class ItemsServiceImpl implements IItemService {
     @Override
     @Async
     public Future<JsonNode> getById(ItemWrapper itemWrapper) {
-        SecurityInfo requestInfo = itemWrapper.getSecurityInfo();
+        JsonNode item = null;
+        try {
+            SecurityInfo requestInfo = itemWrapper.getSecurityInfo();
         
-        Trace.continueSpan(itemWrapper.getSpan());
-         JsonNode item = itemRepository.getById(itemWrapper.getId(), 
-            requestInfo.getxHost(), 
-            requestInfo.getxPort(), 
-            requestInfo.getxRealIp(), 
-            requestInfo.getSsoToken());
-         itemWrapper.getLatch().countDown();
-         return new AsyncResult<JsonNode>(item);
+            Trace.continueSpan(itemWrapper.getSpan());
+            item = itemRepository.getById(itemWrapper.getId(),
+                requestInfo.getxHost(), 
+                requestInfo.getxPort(), 
+                requestInfo.getxRealIp(), 
+                requestInfo.getSsoToken());
+        } finally {
+            itemWrapper.getLatch().countDown();
+        }
+        return new AsyncResult<JsonNode>(item);
     }
 
     @HystrixCommand

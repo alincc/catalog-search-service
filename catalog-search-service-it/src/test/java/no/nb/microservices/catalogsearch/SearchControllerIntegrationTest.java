@@ -71,13 +71,15 @@ public class SearchControllerIntegrationTest {
                     return new MockResponse().setBody(searchResultMock2).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
                 } else if (request.getPath().equals("/search?q=*&page=0&size=10&aggs=ddc1%2Cmediatype")){
                     return new MockResponse().setBody(searchResultMockWithAggragations).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
-                } else if (request.getPath().equals("/catalog/items/id1")){
+                } else if (request.getPath().equals("/catalog/items/id1?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
                     return new MockResponse().setBody(itemId1Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/catalog/items/id2")){
+                } else if (request.getPath().equals("/catalog/items/id2?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
                     return new MockResponse().setBody(itemId2Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/catalog/items/id3")){
+                } else if (request.getPath().equals("/catalog/items/id3?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
                     return new MockResponse().setBody(itemId3Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/catalog/items/id4")){
+                } else if (request.getPath().equals("/catalog/items/id4?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
+                    return new MockResponse().setBody(itemId4Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
+                } else if (request.getPath().startsWith("/catalog/items/id35")){
                     return new MockResponse().setBody(itemId4Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
                 }
                 return new MockResponse().setResponseCode(404);
