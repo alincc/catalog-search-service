@@ -1,7 +1,11 @@
 package no.nb.microservices.catalogsearch.core.item.service;
 
+import java.util.concurrent.Future;
+
 import org.apache.htrace.Trace;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,16 +29,18 @@ public class ItemsServiceImpl implements IItemService {
     }
 
     @Override
-    @HystrixCommand(fallbackMethod = "getDefaultItem")
-    public JsonNode getById(ItemWrapper itemWrapper) {
+    @Async
+    public Future<JsonNode> getById(ItemWrapper itemWrapper) {
         SecurityInfo requestInfo = itemWrapper.getSecurityInfo();
         
         Trace.continueSpan(itemWrapper.getSpan());
-        return itemRepository.getById(itemWrapper.getId(), 
+         JsonNode item = itemRepository.getById(itemWrapper.getId(), 
             requestInfo.getxHost(), 
             requestInfo.getxPort(), 
             requestInfo.getxRealIp(), 
             requestInfo.getSsoToken());
+         itemWrapper.getLatch().countDown();
+         return new AsyncResult<JsonNode>(item);
     }
 
     @HystrixCommand
