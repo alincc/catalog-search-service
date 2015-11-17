@@ -30,7 +30,7 @@
         <dependency>
             <groupId>no.nb.microservices.catalogsearchindex</groupId>
             <artifactId>catalog-search-index-model</artifactId>
-            <version>-8c813c3af8f5b81a1180f7aaeabda19568d70847-36</version>
+            <version>-50</version>
         </dependency>
         <dependency>
             <groupId>no.nb.microservices.catalogitem</groupId>
