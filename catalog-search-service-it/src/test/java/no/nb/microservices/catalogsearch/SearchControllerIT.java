@@ -65,21 +65,21 @@ public class SearchControllerIT {
             @Override
             public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
                 System.out.println(request.getPath());
-                if (request.getPath().equals("/search?q=Ola&fields=-title&page=0&size=10&sort=title%2Cdesc")) {
+                if (request.getPath().equals("/v1/search?q=Ola&fields=-title&page=0&size=10&sort=title%2Cdesc")) {
                     return new MockResponse().setBody(searchResultMock).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
-                } else if (request.getPath().equals("/search?q=Svenno&fields=-title&page=0&size=10&sort=title%2Cdesc")){
+                } else if (request.getPath().equals("/v1/search?q=Svenno&fields=-title&page=0&size=10&sort=title%2Cdesc")){
                     return new MockResponse().setBody(searchResultMock2).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
-                } else if (request.getPath().equals("/search?q=*&page=0&size=10&aggs=ddc1%2Cmediatype")){
+                } else if (request.getPath().equals("/v1/search?q=*&page=0&size=10&aggs=ddc1%2Cmediatype")){
                     return new MockResponse().setBody(searchResultMockWithAggragations).setResponseCode(200).setHeader("Content-Type", "application/hal+json");
-                } else if (request.getPath().equals("/catalog/items/id1?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
+                } else if (request.getPath().equals("/v1/catalog/items/id1?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
                     return new MockResponse().setBody(itemId1Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/catalog/items/id2?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
+                } else if (request.getPath().equals("/v1/catalog/items/id2?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
                     return new MockResponse().setBody(itemId2Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/catalog/items/id3?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
+                } else if (request.getPath().equals("/v1/catalog/items/id3?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
                     return new MockResponse().setBody(itemId3Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().equals("/catalog/items/id4?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
+                } else if (request.getPath().equals("/v1/catalog/items/id4?X-Original-IP-Fra-Frontend=123.45.100.1&amsso=token")){
                     return new MockResponse().setBody(itemId4Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
-                } else if (request.getPath().startsWith("/catalog/items/id35")){
+                } else if (request.getPath().startsWith("/v1/catalog/items/id35")){
                     return new MockResponse().setBody(itemId4Mock).setHeader("Content-Type", "application/hal+json; charset=utf-8");
                 }
                 return new MockResponse().setResponseCode(404);
@@ -105,14 +105,14 @@ public class SearchControllerIT {
         headers.add(UserUtils.REAL_IP_HEADER, "123.45.100.1");
         
         ResponseEntity<SearchResource> entity = new TestRestTemplate().exchange(
-                "http://localhost:" + port + "/catalog/search?q=Ola&fields=-title&size=10&sort=title,desc", HttpMethod.GET,
+                "http://localhost:" + port + "/v1/catalog/search?q=Ola&fields=-title&size=10&sort=title,desc", HttpMethod.GET,
                 new HttpEntity<Void>(headers), SearchResource.class);
         
         assertTrue("Status code should be 200 ", entity.getStatusCode().is2xxSuccessful());
         assertNotNull("Response should have page element", entity.getBody().getMetadata());
         assertNotNull("Response should have _embedded element", entity.getBody().getEmbedded());
         assertNotNull("Response should have links", entity.getBody().getLinks());
-        assertEquals("It should be 4 elements in items array", 4, entity.getBody().getEmbedded().getItems().size());
+        assertEquals("It should be 1 elements in items array", 1, entity.getBody().getEmbedded().getItems().size());
     }
 
     @Test
@@ -120,7 +120,7 @@ public class SearchControllerIT {
         HttpHeaders headers = new HttpHeaders();
         headers.add(UserUtils.SSO_HEADER, "token");
         headers.add(UserUtils.REAL_IP_HEADER, "123.45.100.1");
-        String url = "http://localhost:" + port + "/catalog/search?q=*&aggs=ddc1,mediatype";
+        String url = "http://localhost:" + port + "/v1/catalog/search?q=*&aggs=ddc1,mediatype";
         ResponseEntity<SearchResource> entity = new TestRestTemplate().exchange(url, HttpMethod.GET, new HttpEntity<Void>(headers), SearchResource.class);
 
         assertTrue("Status code should be 200 ", entity.getStatusCode().is2xxSuccessful());
@@ -137,7 +137,7 @@ public class SearchControllerIT {
         headers.add(UserUtils.REAL_IP_HEADER, "123.45.100.1");
         
         ResponseEntity<SearchResource> entity = new TestRestTemplate().exchange(
-                "http://localhost:" + port + "/catalog/search?q=Kalle&fields=-title&size=10&sort=title,desc", HttpMethod.GET,
+                "http://localhost:" + port + "/v1/catalog/search?q=Kalle&fields=-title&size=10&sort=title,desc", HttpMethod.GET,
                 new HttpEntity<Void>(headers), SearchResource.class);
 
         assertTrue(entity.getStatusCode().is2xxSuccessful());
@@ -156,7 +156,7 @@ public class SearchControllerIT {
         headers.add(UserUtils.REAL_IP_HEADER, "123.45.100.1");
 
         ResponseEntity<SearchResource> entity = new TestRestTemplate().exchange(
-                "http://localhost:" + port + "/catalog/search?q=Svenno&fields=-title&size=10&sort=title,desc", HttpMethod.GET,
+                "http://localhost:" + port + "/v1/catalog/search?q=Svenno&fields=-title&size=10&sort=title,desc", HttpMethod.GET,
                 new HttpEntity<Void>(headers), SearchResource.class);
 
 

@@ -1,7 +1,7 @@
 {  
    "_links": {
         "self": {
-           "href": "http://localhost/item/id4"
+           "href": "http://localhost/v1/item/id4"
         }
     },
    "metadata":{  

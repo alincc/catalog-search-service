@@ -1,29 +1,19 @@
 {  
    "_links":{  
       "self":{  
-         "href":"http://localhost/search?q=*"
+         "href":"http://localhost/v1/search?q=urn%3A%22URN%3ANBN%3Ano-nb_video_958%22&page=0&size=1"
       }
    },
    "page":{  
-      "size":"11",
-      "totalElements":4,
+      "size":"1",
+      "totalElements":1,
       "totalPages":1,
       "number":0
    },
    "_embedded":{
-      "testId": "HEIA",
       "items":[  
          {  
             "itemId":"id1"
-         },
-         {  
-            "itemId":"id2"
-         },
-         {  
-            "itemId":"id3"
-         },
-         {  
-            "itemId":"id4"
          }
       ]
    }
