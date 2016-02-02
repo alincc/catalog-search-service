@@ -9,7 +9,7 @@
 
     <groupId>no.nb.microservices.catalogsearch</groupId>
     <artifactId>catalog-search-service</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>REST service for catalog-search</description>
 
