@@ -3,41 +3,8 @@ info:
     name: catalog-search-service
     description: Search in the National Library of Norway catalog
 
-spring:
-  application:
-    name: catalog-search-service
-
-endpoints:
-  restart:
-    enabled: true
-  refresh:
-    enabled: true
-
 server:
-  port: 8083
-
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-
-ribbon:
-  ReadTimeout: 5000
+  port: 0
 
 zipkin:
     collector-hostname: localhost
----
-spring:
-    profiles: docker
-
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    serviceUrl:
-      defaultZone: http://discovery:8761/eureka/
-      
-zipkin:
-    collector-hostname: zipkinCollector
